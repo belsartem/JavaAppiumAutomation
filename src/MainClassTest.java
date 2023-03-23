@@ -4,7 +4,7 @@ import org.junit.Test;
 public class MainClassTest extends MainClass {
 
     @Test
-    public void testGetClassNumber(){
-        Assert.assertTrue("Значение меньше 45", getClassNumber() > 45);
+    public void testGetClassString(){
+        Assert.assertTrue("В возвращенной строке нет значений 'hello' или 'Hello'", getClassString().contains("Hello") || getClassString().contains("hello"));
     }
 }
