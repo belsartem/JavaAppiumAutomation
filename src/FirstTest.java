@@ -129,6 +129,21 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCompareElementText() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        assertElementHasText(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Search…",
+                "There's no such text in the element"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -164,6 +179,17 @@ public class FirstTest {
     private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.clear();
+        return element;
+    }
+
+    private WebElement assertElementHasText(By by, String expectedText, String errorMessage) {
+        WebElement element = waitForElementPresent(by, errorMessage);
+        String elementAttribute = element.getAttribute("text");
+        Assert.assertEquals(
+                errorMessage,
+                expectedText,
+                elementAttribute
+        );
         return element;
     }
 }
