@@ -178,6 +178,34 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testResultsContainWord() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "No search results",
+                10
+        );
+
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Java",
+                "At least one of the results has no the word you are looking for"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -189,6 +217,14 @@ public class FirstTest {
     private WebElement waitForElementPresent(By by, String errorMessage) {
         return waitForElementPresent(by, errorMessage, 5);
     }
+
+//    private WebElement waitForListOfElementsPresent(By by, String errorMessage) {
+//        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+//        wait.withMessage(errorMessage + "\n");
+//        return wait.until(
+//                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+//        );
+//    }
 
     private WebElement waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
@@ -226,4 +262,24 @@ public class FirstTest {
         );
         return element;
     }
+//
+//    private WebElement assertListOfElementsHasText(By by, String expectedText, String errorMessage) {
+//        //WebElement element = waitForElementPresent(by, errorMessage);
+//        WebElement[] element = new WebElement[] {waitForListOfElementsPresent(by, errorMessage)};
+//
+//        //WebElement element[] = new WebElement(waitForListOfElementsPresent(by, errorMessage));
+//
+//        //int numberSearchResultsOnScreen = element.size();
+////        String elementAttribute = element.getAttribute("text");
+////        Assert.assertEquals(
+////                errorMessage,
+////                expectedText,
+////                elementAttribute
+////        );
+//
+//        //WebElement elementList = waitForListOfElementsPresent(by, errorMessage);
+//        //elementList.size();
+//
+//        return null;
+//    }
 }
