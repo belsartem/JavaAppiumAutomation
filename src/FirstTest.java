@@ -218,14 +218,14 @@ public class FirstTest {
 
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
-                "Java",
+                "Appium",
                 "Cannot find search input",
                 5
         );
 
         waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Automation for Apps']"),
+                "Cannot find 'Automation for Apps' topic searching by 'Appium'",
                 15
         );
 
@@ -235,11 +235,11 @@ public class FirstTest {
                 15
         );
 
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
-        swipeUp(2000);
+        swipeUpToFindElement(
+                By.xpath("//*[@text='View page in browser']"),
+                "Cannot find the end of the article",
+                20
+        );
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
@@ -307,6 +307,22 @@ public class FirstTest {
         int endY = (int) (size.height * 0.2);
 
         action.press(x, startY).waitAction(timeOfSwipe).moveTo(x, endY).release().perform();
+    }
+
+    protected void swipeUpQuick() {
+        swipeUp(200);
+    }
+
+    protected void swipeUpToFindElement(By by, String errorMessage, int maxSwipes) {
+        int alreadySwiped = 0;
+        while (driver.findElements(by).size() == 0) {
+            if (alreadySwiped > maxSwipes) {
+                waitForElementPresent(by, "Cannot find the element by swiping up. \n" + errorMessage, 0);
+                return;
+            }
+            swipeUpQuick();
+            ++alreadySwiped;
+        }
     }
 //
 //    private WebElement assertListOfElementsHasText(By by, String expectedText, String errorMessage) {
