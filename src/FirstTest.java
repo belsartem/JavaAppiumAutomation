@@ -373,6 +373,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testAmountOfEmptySearch() {
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String searchLine = "shjdrkjtfdfhy";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@text='Search…']"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        String emptyResultsLabel = "//*[@text='No results found']";
+        waitForElementPresent(
+                By.xpath(emptyResultsLabel),
+                "Cannot find empty results label by the request '" + searchLine + "'",
+                15
+        );
+
+        assertElementNotPresent(
+                By.xpath(searchResultLocator),
+                "We have found some results by request " + searchLine
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -491,6 +521,14 @@ public class FirstTest {
     private int getAmountOfElements(By by) {
         List elements = driver.findElements(by);
         return elements.size();
+    }
+
+    private void assertElementNotPresent(By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements > 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
     }
 //
 //    private WebElement assertListOfElementsHasText(By by, String expectedText, String errorMessage) {
