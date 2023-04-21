@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -296,13 +297,6 @@ public class FirstTest {
 
         String nameOfFolder = "Learning programming";
 
-//        waitForElementAndSendKeys(
-//                By.id("org.wikipedia:id/text_input"),
-//                nameOfFolder,
-//                "Cannot put text into articles folder input",
-//                1
-//        );
-
         waitForElementAndSetValue(
                 By.id("org.wikipedia:id/text_input"),
                 nameOfFolder,
@@ -343,6 +337,39 @@ public class FirstTest {
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot delete saved article",
                 5
+        );
+    }
+
+    @Test
+    public void testAmountOfNotEmptySearch() {
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String searchLine = "Linkin Park discography";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@text='Search…']"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        waitForElementPresent(
+                By.xpath(searchResultLocator),
+                "Cannot find anything by the request " + "'" + searchLine + "'",
+                15
+        );
+
+        int amountOfSearchResults = getAmountOfElements(
+                By.xpath(searchResultLocator)
+        );
+
+        Assert.assertTrue(
+                "We found too few results",
+                amountOfSearchResults > 0
         );
     }
 
@@ -459,6 +486,11 @@ public class FirstTest {
                 .moveTo(leftX, middleY)
                 .release()
                 .perform();
+    }
+
+    private int getAmountOfElements(By by) {
+        List elements = driver.findElements(by);
+        return elements.size();
     }
 //
 //    private WebElement assertListOfElementsHasText(By by, String expectedText, String errorMessage) {
