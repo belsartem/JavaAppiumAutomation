@@ -667,6 +667,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testTitleElement() {
+
+        String searchRequest = "Appium";
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[@text='Search…']"),
+                searchRequest,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Automation for Apps']"),
+                "Cannot find 'Automation for Apps' topic searching by " + "'" + searchRequest + "'",
+                15
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -793,6 +823,12 @@ public class FirstTest {
             String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        WebElement element = waitForElementPresent(by, errorMessage);
+        String defaultMessage = "An element '" + by.toString() + "' supposed to be present";
+        Assert.assertNotNull(String.valueOf(element), defaultMessage);
     }
 
     private String waitForElementAndGetAttribute(By by, String attribute, String errorMessage, long timeOutInSeconds) {
