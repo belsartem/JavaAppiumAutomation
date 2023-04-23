@@ -1,35 +1,38 @@
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.TouchAction;
 import lib.CoreTestCase;
+import lib.ui.MainPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 
 public class FirstTest extends CoreTestCase {
 
+    private MainPageObject MainPageObject;
+
+    protected void setUp() throws Exception {
+
+        super.setUp();
+
+        MainPageObject = new MainPageObject(driver);
+    }
+
     @Test
     public void testSearch() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
                 15
@@ -38,32 +41,32 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClear(
+        MainPageObject.waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
                 "Cannot find X to cancel search",
                 5
         );
 
-        waitForElementNotPresentById(
+        MainPageObject.waitForElementNotPresentById(
                 By.id("org.wikipedia:id/search_close_btn"),
                 "X is still present on the page",
                 5
@@ -72,26 +75,26 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCompareArticleTitle() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
                 15
         );
 
-        WebElement titleElement = waitForElementPresent(
+        WebElement titleElement = MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannod find article title",
                 15
@@ -108,13 +111,13 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCompareElementText() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        assertElementHasText(
+        MainPageObject.assertElementHasText(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Search…",
                 "There's no such text in the element"
@@ -123,32 +126,32 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCancelSearchResults() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Lana",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/search_results_list"),
                 "No search results",
                 10
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
                 "Cannot find X to cancel search",
                 5
         );
 
-        waitForElementNotPresentById(
+        MainPageObject.waitForElementNotPresentById(
                 By.id("org.wikipedia:id/search_results_list"),
                 "Search results are still present on the page",
                 5
@@ -157,26 +160,26 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testResultsContainWord() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/search_results_list"),
                 "No search results",
                 10
         );
 
-        assertElementHasText(
+        MainPageObject.assertElementHasText(
                 By.id("org.wikipedia:id/search_results_list"),
                 "Java",
                 "At least one of the results has no the word you are looking for"
@@ -185,32 +188,32 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSwipeArticle() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Appium",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Automation for Apps']"),
                 "Cannot find 'Automation for Apps' topic searching by 'Appium'",
                 15
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannod find article title",
                 15
         );
 
-        swipeUpToFindElement(
+        MainPageObject.swipeUpToFindElement(
                 By.xpath("//*[@text='View page in browser']"),
                 "Cannot find the end of the article",
                 20
@@ -219,50 +222,50 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveFirstArticleToMyList() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
                 15
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannod find article title",
                 15
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageView[@content-desc='More options']"),
                 "Cannot find the button to open article options",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Add to reading list']"),
                 "Cannot find an option to add the article to reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/onboarding_button"),
                 "Cannot find a GOT IT tip overlay",
                 5
         );
 
-        waitForElementAndClear(
+        MainPageObject.waitForElementAndClear(
                 By.xpath("//*[@text='My reading list']"),
                 "Cannot find an input to set name of an article folder",
                 1
@@ -270,43 +273,43 @@ public class FirstTest extends CoreTestCase {
 
         String nameOfFolder = "Learning programming";
 
-        waitForElementAndSetValue(
+        MainPageObject.waitForElementAndSetValue(
                 By.id("org.wikipedia:id/text_input"),
                 nameOfFolder,
                 "Cannot put text into articles folder input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='OK']"),
                 "Cannot press OK button to save a reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
                 "Cannot press X to close the article",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
                 "Cannot press My List to open reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='" + nameOfFolder + "']"),
                 "Cannot find created folder",
                 5
         );
 
-        swipeElementToLeft(
+        MainPageObject.swipeElementToLeft(
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot swipe saved article"
         );
 
-        waitForElementNotPresentById(
+        MainPageObject.waitForElementNotPresentById(
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot delete saved article",
                 5
@@ -315,14 +318,14 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
         String searchLine = "Linkin Park discography";
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 searchLine,
                 "Cannot find search input",
@@ -330,13 +333,13 @@ public class FirstTest extends CoreTestCase {
         );
 
         String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']";
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.xpath(searchResultLocator),
                 "Cannot find anything by the request " + "'" + searchLine + "'",
                 15
         );
 
-        int amountOfSearchResults = getAmountOfElements(
+        int amountOfSearchResults = MainPageObject.getAmountOfElements(
                 By.xpath(searchResultLocator)
         );
 
@@ -348,14 +351,14 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
         String searchLine = "shjdrkjtfdfhy";
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 searchLine,
                 "Cannot find search input",
@@ -364,13 +367,13 @@ public class FirstTest extends CoreTestCase {
 
         String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']";
         String emptyResultsLabel = "//*[@text='No results found']";
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.xpath(emptyResultsLabel),
                 "Cannot find empty results label by the request '" + searchLine + "'",
                 15
         );
 
-        assertElementNotPresent(
+        MainPageObject.assertElementNotPresent(
                 By.xpath(searchResultLocator),
                 "We have found some results by request " + searchLine
         );
@@ -378,27 +381,27 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testChangeScreenOrientationOnSearchResults() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
         String searchLine = "Java";
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 searchLine,
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by " + "'" + searchLine + "'",
                 15
         );
 
-        String titleBeforeRotation = waitForElementAndGetAttribute(
+        String titleBeforeRotation = MainPageObject.waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "text",
                 "Cannot find a title of the article",
@@ -407,7 +410,7 @@ public class FirstTest extends CoreTestCase {
 
         driver.rotate(ScreenOrientation.LANDSCAPE);
 
-        String titleAfterRotation = waitForElementAndGetAttribute(
+        String titleAfterRotation = MainPageObject.waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "text",
                 "Cannot find a title of the article",
@@ -422,7 +425,7 @@ public class FirstTest extends CoreTestCase {
 
         driver.rotate(ScreenOrientation.PORTRAIT);
 
-        String titleAfterSecondRotation = waitForElementAndGetAttribute(
+        String titleAfterSecondRotation = MainPageObject.waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "text",
                 "Cannot find a title of the article",
@@ -439,20 +442,20 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCheckSearchArticleInBackground() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
                 5
@@ -460,7 +463,7 @@ public class FirstTest extends CoreTestCase {
 
         driver.runAppInBackground(2);
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find the article after returning from background",
                 5
@@ -469,50 +472,50 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveTwoArticlesTiListAnDeleteOne() {
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 "Java",
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
                 15
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article title",
                 15
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageView[@content-desc='More options']"),
                 "Cannot find the button to open article options",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ListView//*[@text='Add to reading list']"),
                 "Cannot find an option to add the article to reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/onboarding_button"),
                 "Cannot find a GOT IT tip overlay",
                 5
         );
 
-        waitForElementAndClear(
+        MainPageObject.waitForElementAndClear(
                 By.xpath("//*[@text='My reading list']"),
                 "Cannot find an input to set name of an article folder",
                 1
@@ -520,26 +523,26 @@ public class FirstTest extends CoreTestCase {
 
         String nameOfFolder = "Learning programming";
 
-        waitForElementAndSetValue(
+        MainPageObject.waitForElementAndSetValue(
                 By.id("org.wikipedia:id/text_input"),
                 nameOfFolder,
                 "Cannot put text into articles folder input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='OK']"),
                 "Cannot press OK button to save a reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
                 "Cannot press X to close the article",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
@@ -547,85 +550,85 @@ public class FirstTest extends CoreTestCase {
 
         String searchRequest = "Appium";
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 searchRequest,
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Automation for Apps']"),
                 "Cannot find 'Automation for Apps' topic searching by " + "'" + searchRequest + "'",
                 15
         );
 
-        waitForElementPresent(
+        MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article title",
                 15
         );
 
-        String articleTitleBeforeAdding = waitForElementPresent(
+        String articleTitleBeforeAdding = MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article title",
                 15
         ).getText();
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageView[@content-desc='More options']"),
                 "Cannot find the button to open article options",
                 10
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ListView//*[@text='Add to reading list']"),
                 "Cannot find an option to add the article to reading list",
                 10
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='" + nameOfFolder + "']"),
                 "Cannot find created folder",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
                 "Cannot press X to close the article",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
                 "Cannot press My List to open reading list",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='" + nameOfFolder + "']"),
                 "Cannot find created folder",
                 5
         );
 
-        swipeElementToLeft(
+        MainPageObject.swipeElementToLeft(
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot swipe saved article"
         );
 
-        waitForElementNotPresentById(
+        MainPageObject.waitForElementNotPresentById(
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot delete saved article",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='" + searchRequest + "']"),
                 "The article '" + searchRequest + "' is not in the list",
                 1
         );
 
-        String articleTitleAfterAdding = waitForElementPresent(
+        String articleTitleAfterAdding = MainPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article title",
                 15
@@ -644,187 +647,28 @@ public class FirstTest extends CoreTestCase {
 
         String searchRequest = "Appium";
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
 
-        waitForElementAndSendKeys(
+        MainPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[@text='Search…']"),
                 searchRequest,
                 "Cannot find search input",
                 5
         );
 
-        waitForElementAndClick(
+        MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Automation for Apps']"),
                 "Cannot find 'Automation for Apps' topic searching by " + "'" + searchRequest + "'",
                 15
         );
 
-        assertElementPresent(
+        MainPageObject.assertElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article title"
         );
     }
-
-    private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(errorMessage + "\n");
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
-    private WebElement waitForElementPresent(By by, String errorMessage) {
-        return waitForElementPresent(by, errorMessage, 5);
-    }
-
-//    private WebElement waitForListOfElementsPresent(By by, String errorMessage) {
-//        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-//        wait.withMessage(errorMessage + "\n");
-//        return wait.until(
-//                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
-//        );
-//    }
-
-    private WebElement waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
-        WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
-        element.click();
-        return element;
-    }
-
-    private WebElement waitForElementAndSendKeys(By by, String value, String errorMessage, long timeoutInSeconds) {
-        WebElement element = waitForElementAndClick(by, errorMessage, timeoutInSeconds);
-        element.sendKeys(value);
-        return element;
-    }
-
-    private WebElement waitForElementAndSetValue(By by, String value, String errorMessage, long timeoutInSeconds) {
-        MobileElement element = (MobileElement) waitForElementPresent(by, errorMessage, timeoutInSeconds);
-        element.setValue(value);
-        return element;
-    }
-
-    private Boolean waitForElementNotPresentById(By by, String errorMessage, long timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(errorMessage + "\n");
-        return wait.until(
-                ExpectedConditions.invisibilityOfElementLocated(by)
-        );
-    }
-
-    private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds) {
-        WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
-        element.clear();
-        return element;
-    }
-
-    private WebElement assertElementHasText(By by, String expectedText, String errorMessage) {
-        WebElement element = waitForElementPresent(by, errorMessage);
-        String elementAttribute = element.getAttribute("text");
-        Assert.assertEquals(
-                errorMessage,
-                expectedText,
-                elementAttribute
-        );
-        return element;
-    }
-
-    protected void swipeUp(int timeOfSwipe) {
-        TouchAction action = new TouchAction(driver);
-        Dimension size = driver.manage().window().getSize();
-        int x = size.width / 2;
-        int startY = (int) (size.height * 0.8);
-        int endY = (int) (size.height * 0.2);
-
-        action
-                .press(x, startY)
-                .waitAction(timeOfSwipe)
-                .moveTo(x, endY)
-                .release()
-                .perform();
-    }
-
-    protected void swipeUpQuick() {
-        swipeUp(200);
-    }
-
-    protected void swipeUpToFindElement(By by, String errorMessage, int maxSwipes) {
-        int alreadySwiped = 0;
-        while (driver.findElements(by).size() == 0) {
-            if (alreadySwiped > maxSwipes) {
-                waitForElementPresent(by, "Cannot find the element by swiping up. \n" + errorMessage, 0);
-                return;
-            }
-            swipeUpQuick();
-            ++alreadySwiped;
-        }
-    }
-
-    protected void swipeElementToLeft(By by, String errorMessage) {
-        WebElement element = waitForElementPresent(
-                by,
-                errorMessage,
-                10);
-
-        int leftX = element.getLocation().getX();
-        int rightX = leftX + element.getSize().getWidth();
-        int upperY = element.getLocation().getY();
-        int lowerY = upperY + element.getSize().getHeight();
-        int middleY = (upperY + lowerY) / 2;
-
-        TouchAction action = new TouchAction(driver);
-        action
-                .press(rightX, middleY)
-                .waitAction(300)
-                .moveTo(leftX, middleY)
-                .release()
-                .perform();
-    }
-
-    private int getAmountOfElements(By by) {
-        List elements = driver.findElements(by);
-        return elements.size();
-    }
-
-    private void assertElementNotPresent(By by, String errorMessage) {
-        int amountOfElements = getAmountOfElements(by);
-        if (amountOfElements > 0) {
-            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
-            throw new AssertionError(defaultMessage + " " + errorMessage);
-        }
-    }
-
-    private void assertElementPresent(By by, String errorMessage) {
-        WebElement element = waitForElementPresent(by, errorMessage);
-        String defaultMessage = "An element '" + by.toString() + "' supposed to be present";
-        Assert.assertNotNull(String.valueOf(element), defaultMessage);
-    }
-
-    private String waitForElementAndGetAttribute(By by, String attribute, String errorMessage, long timeOutInSeconds) {
-        WebElement element = waitForElementPresent(by, errorMessage, timeOutInSeconds);
-        return element.getAttribute(attribute);
-    }
-//
-//    private WebElement assertListOfElementsHasText(By by, String expectedText, String errorMessage) {
-//        //WebElement element = waitForElementPresent(by, errorMessage);
-//        WebElement[] element = new WebElement[] {waitForListOfElementsPresent(by, errorMessage)};
-//
-//        //WebElement element[] = new WebElement(waitForListOfElementsPresent(by, errorMessage));
-//
-//        //int numberSearchResultsOnScreen = element.size();
-////        String elementAttribute = element.getAttribute("text");
-////        Assert.assertEquals(
-////                errorMessage,
-////                expectedText,
-////                elementAttribute
-////        );
-//
-//        //WebElement elementList = waitForListOfElementsPresent(by, errorMessage);
-//        //elementList.size();
-//
-//        return null;
-//    }
 }
