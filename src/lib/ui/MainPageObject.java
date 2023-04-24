@@ -58,7 +58,7 @@ public class MainPageObject {
         return element;
     }
 
-    public Boolean waitForElementNotPresentById(By by, String errorMessage, long timeoutInSeconds) {
+    public Boolean waitForElementNotPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
         return wait.until(

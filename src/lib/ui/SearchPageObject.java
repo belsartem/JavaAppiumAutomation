@@ -8,6 +8,7 @@ public class SearchPageObject extends MainPageObject {
     private static final String
             SEARCH_INIT_ELEMENT = "//*[contains(@text,'Search Wikipedia')]",
             SEARCH_INPUT = "//*[contains(@text,'Search…')]",
+            SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_container']//*[@text='{SUBSTRING}']";
 
     public SearchPageObject(AppiumDriver driver) {
@@ -23,6 +24,18 @@ public class SearchPageObject extends MainPageObject {
     public void initSearchInput() {
         this.waitForElementPresent(By.xpath(SEARCH_INIT_ELEMENT), "Cannot find search input after clicking search init element");
         this.waitForElementAndClick(By.xpath(SEARCH_INIT_ELEMENT), "Cannot find and click search init element", 5);
+    }
+
+    public void waitForCancelButtonToAppear() {
+        this.waitForElementPresent(By.id(SEARCH_CANCEL_BUTTON), "Cannot find search cancel button", 5);
+    }
+
+    public void waitForCancelButtonToDisappear() {
+        this.waitForElementNotPresent(By.id(SEARCH_CANCEL_BUTTON), "Search cancel button is still present", 5);
+    }
+
+    public void clickCancelSearch() {
+        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
     }
 
     public void typeSearchLine(String searchLine) {
