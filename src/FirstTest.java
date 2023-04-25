@@ -1,10 +1,7 @@
 import lib.CoreTestCase;
 import lib.ui.*;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
 
 public class FirstTest extends CoreTestCase {
 
@@ -15,52 +12,6 @@ public class FirstTest extends CoreTestCase {
         super.setUp();
 
         MainPageObject = new MainPageObject(driver);
-    }
-
-    @Test
-    public void testSearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
-    }
-
-    @Test
-    public void testCancelSearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.waitForCancelButtonToAppear();
-        SearchPageObject.clickCancelSearch();
-        SearchPageObject.waitForCancelButtonToDisappear();
-    }
-
-    @Test
-    public void testCompareArticleTitle() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String articleTitle = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals(
-                "Unexpected title",
-                "Java (programming language)",
-                articleTitle
-        );
-    }
-
-    @Test
-    public void testSwipeArticle() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Appium");
-        SearchPageObject.clickByArticleWithSubstring("Automation for Apps");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.swipeToFooter();
     }
 
     @Test
@@ -138,98 +89,6 @@ public class FirstTest extends CoreTestCase {
                 "Java",
                 "At least one of the results has no the word you are looking for"
         );
-    }
-
-    @Test
-    public void testSaveFirstArticleToMyList() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.waitForTitleElement();
-        String articleTitle = ArticlePageObject.getArticleTitle();
-        String nameOfFolder = "Learning programming";
-
-        ArticlePageObject.addArticleToMyList(nameOfFolder);
-        ArticlePageObject.closeArticle();
-
-        NavigationUI NavigationUI = new NavigationUI(driver);
-        NavigationUI.clickMyLists();
-
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(nameOfFolder);
-        MyListsPageObject.swipeArticleToDelete(articleTitle);
-    }
-
-    @Test
-    public void testAmountOfNotEmptySearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        String searchLine = "Linkin Park discography";
-        SearchPageObject.typeSearchLine(searchLine);
-        int amountOfSearchResults = SearchPageObject.getAmountOfFoundArticles();
-
-        Assert.assertTrue(
-                "We found too few results",
-                amountOfSearchResults > 0
-        );
-    }
-
-    @Test
-    public void testAmountOfEmptySearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        String searchLine = "shjdrkjtfdfhy";
-        SearchPageObject.typeSearchLine(searchLine);
-        SearchPageObject.waitForEmptyResultsLabel();
-        SearchPageObject.assertThereIsNoResultOfSearch();
-    }
-
-    @Test
-    public void testChangeScreenOrientationOnSearchResults() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String titleBeforeRotation = ArticlePageObject.getArticleTitle();
-
-        this.rotateScreenLandscape();
-
-        String titleAfterRotation = ArticlePageObject.getArticleTitle();
-
-
-        Assert.assertEquals(
-                "The article title has been changed after screen rotation",
-                titleBeforeRotation,
-                titleAfterRotation
-        );
-
-        this.rotateScreenPortrait();
-
-        String titleAfterSecondRotation = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals(
-                "The article title has been changed after screen rotation",
-                titleBeforeRotation,
-                titleAfterSecondRotation
-        );
-
-    }
-
-    @Test
-    public void testCheckSearchArticleInBackground() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
-
-        this.backgroundApp(2);
-
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
 
     @Test
@@ -396,7 +255,7 @@ public class FirstTest extends CoreTestCase {
                 15
         ).getText();
 
-        Assert.assertEquals(
+        assertEquals(
                 "The article title has been changed after adding to the reading list",
                 articleTitleBeforeAdding,
                 articleTitleAfterAdding
